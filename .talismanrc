@@ -3,3 +3,5 @@ fileignoreconfig:
   checksum: 718b33cc7f6135e70c95805b079f9122e04321f598ca576f20186a1bad274e36
 - filename: scripts/test_deployment.sh
   checksum: d27bec4ba2b457de4045a468a7594c9f8c209a799e684f9d2afb1072303666ee
+- filename: README.md
+  checksum: 6f2809d06fa7d484b934ac433b70b9367908e5ee5d7a29d0650a451ca470f8f0
