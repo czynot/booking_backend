@@ -58,7 +58,7 @@ dependencies {
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.6.9'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-    implementation 'org.postgresql:postgresql:42.3.3'
+    implementation 'org.postgresql:postgresql:42.4.1'
     implementation 'com.jcabi:jcabi-manifests:1.1'
     implementation 'org.flywaydb:flyway-core'
 
@@ -78,7 +78,7 @@ dependencies {
             allVariants {
                 withDependencyConstraints {
                     // Need to patch constraints because snakeyaml is an optional dependency
-                    it.findAll { it.name == 'snakeyaml' }.each { it.version { strictly '1.19' } }
+                    it.findAll { it.name == 'snakeyaml' }.each { it.version { strictly '1.31' } }
                 }
             }
         }
