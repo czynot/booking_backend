@@ -5,3 +5,5 @@ fileignoreconfig:
   checksum: d27bec4ba2b457de4045a468a7594c9f8c209a799e684f9d2afb1072303666ee
 - filename: README.md
   checksum: 6f2809d06fa7d484b934ac433b70b9367908e5ee5d7a29d0650a451ca470f8f0
+- filename: src/main/resources/db/migration/V1.10__CreateAdminTable.sql
+  checksum: 1298683b901ade2707f03b1ddba44f3ce3d91194a25bcd4387d3ca4f751d3835

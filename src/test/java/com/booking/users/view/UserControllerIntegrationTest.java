@@ -1,6 +1,7 @@
 package com.booking.users.view;
 
 import com.booking.App;
+import com.booking.users.AdminRepository;
 import com.booking.users.User;
 import com.booking.users.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -28,13 +29,18 @@ class UserControllerIntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private AdminRepository adminRepository;
+
     @BeforeEach
     public void before() {
+        adminRepository.deleteAll();
         userRepository.deleteAll();
     }
 
     @AfterEach
     public void after() {
+        adminRepository.deleteAll();
         userRepository.deleteAll();
     }
 
