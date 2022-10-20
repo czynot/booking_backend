@@ -46,9 +46,9 @@ test {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation('com.fasterxml.jackson.core:jackson-databind:2.13.2.1') {
+    implementation('com.fasterxml.jackson.core:jackson-databind:2.13.4.2') {
         version {
-            strictly '2.13.2.1'
+            strictly '2.13.4.2'
         }
     }
     implementation 'com.fasterxml.jackson:jackson-bom:2.13.2'
