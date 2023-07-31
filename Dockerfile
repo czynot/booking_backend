@@ -1,5 +1,5 @@
 ARG REGISTRY_URI
-FROM ${REGISTRY_URI}/openjdk:open-11.0.14.1_1-jdk
+FROM ${REGISTRY_URI}/openjdk:open-11.0.14.1-jdk
 
 ARG VERSION=1.0-SNAPSHOT
 COPY build/libs/com.app.booking-${VERSION}.jar booking.jar
