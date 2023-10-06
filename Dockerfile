@@ -1,5 +1,5 @@
 ARG REGISTRY_URI
-FROM ${REGISTRY_URI}/openjdk:11.0.14.1-jdk
+FROM ${REGISTRY_URI}/jdk:eclipse-temurin_11.0.20_8-jdk
 
 ARG VERSION=1.0-SNAPSHOT
 COPY build/libs/com.app.booking-${VERSION}.jar booking.jar
