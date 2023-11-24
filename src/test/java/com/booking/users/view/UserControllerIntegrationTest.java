@@ -12,11 +12,12 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(classes = App.class)
 @AutoConfigureMockMvc
@@ -57,6 +58,22 @@ class UserControllerIntegrationTest {
     public void shouldThrowErrorMessageForInvalidCredentials() throws Exception {
         mockMvc.perform(get("/login"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void shouldReturnInvalidRequestOnProvidingWeakPassword() throws Exception {
+        userRepository.save(new User("test-user", "password"));
+        final String requestJson = "{" +
+                "\"oldPassword\": \"Password@1\"," +
+                "\"newPassword\": \"Password\""+
+                "}";
+
+
+        mockMvc.perform(put("/change-password")
+                        .with(httpBasic("test-user", "password"))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest());
     }
 
 }
