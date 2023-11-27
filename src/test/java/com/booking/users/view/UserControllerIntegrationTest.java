@@ -1,6 +1,9 @@
 package com.booking.users.view;
 
 import com.booking.App;
+import com.booking.passwordHistory.PasswordHistory;
+import com.booking.passwordHistory.repository.PasswordHistoryRepository;
+import com.booking.users.Admin;
 import com.booking.users.AdminRepository;
 import com.booking.users.User;
 import com.booking.users.UserRepository;
@@ -15,6 +18,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -33,14 +39,21 @@ class UserControllerIntegrationTest {
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
+    private PasswordHistoryRepository passwordHistoryRepository;
+
+
+
     @BeforeEach
     public void before() {
+        passwordHistoryRepository.deleteAll();
         adminRepository.deleteAll();
         userRepository.deleteAll();
     }
 
     @AfterEach
     public void after() {
+        passwordHistoryRepository.deleteAll();
         adminRepository.deleteAll();
         userRepository.deleteAll();
     }
@@ -75,5 +88,70 @@ class UserControllerIntegrationTest {
                         .content(requestJson))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    public void shouldReturnInvalidRequestOnProvidingSameOldAndNewPassword() throws Exception {
+        userRepository.save(new User("test-user", "password"));
+        final String requestJson = "{" +
+                "\"oldPassword\": \"Password@1\"," +
+                "\"newPassword\": \"Password@1\""+
+                "}";
+
+
+        mockMvc.perform(put("/change-password")
+                        .with(httpBasic("test-user", "password"))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void shouldUpdateTheNewPasswordAndSaveOldPassword() throws Exception {
+        User user = userRepository.save(new User("test-user", "password"));
+        adminRepository.save(new Admin(user,"test-user",1));
+        final String requestJson = "{" +
+                "\"oldPassword\": \"password\"," +
+                "\"newPassword\": \"Password@2\""+
+                "}";
+
+
+        mockMvc.perform(put("/change-password")
+                        .with(httpBasic("test-user", "password"))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestJson))
+                .andExpect(status().isOk());
+
+        User updatedUser = userRepository.getByUsername("test-user");
+        assertThat(updatedUser.getPassword(),is(equalTo("Password@2")));
+        assertThat(passwordHistoryRepository.findAll().size(),is(1));
+;
+    }
+
+    @Test
+    public void shouldUpdateTheNewPasswordAndSaveOldPasswordAndDeleteVeryOldPassword() throws Exception {
+        User user = userRepository.save(new User("test-user", "password"));
+        adminRepository.save(new Admin(user,"test-user",1));
+        passwordHistoryRepository.save(new PasswordHistory(user, "Password@1"));
+        passwordHistoryRepository.save(new PasswordHistory(user, "Password@2"));
+        passwordHistoryRepository.save(new PasswordHistory(user, "Password@3"));
+        final String requestJson = "{" +
+                "\"oldPassword\": \"password\"," +
+                "\"newPassword\": \"Password@4\""+
+                "}";
+
+
+        mockMvc.perform(put("/change-password")
+                        .with(httpBasic("test-user", "password"))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestJson))
+                .andExpect(status().isOk());
+
+        User updatedUser = userRepository.getByUsername("test-user");
+        assertThat(updatedUser.getPassword(),is(equalTo("Password@4")));
+        assertThat(passwordHistoryRepository.findAll().size(),is(3));
+        ;
+    }
+
+
 
 }

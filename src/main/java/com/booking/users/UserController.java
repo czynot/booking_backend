@@ -1,5 +1,7 @@
 package com.booking.users;
 
+import com.booking.exceptions.InvalidPasswordException;
+import com.booking.exceptions.UnAuthorizedUserException;
 import com.booking.users.service.UserService;
 import com.booking.users.view.ChangePasswordRequest;
 import io.swagger.annotations.Api;
@@ -34,8 +36,14 @@ public class UserController {
     }
 
     @PutMapping(path = "/change-password")
-    Admin changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest, Principal principal) {
+    String changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest, Principal principal) throws InvalidPasswordException, UnAuthorizedUserException {
 
-        return userService.getByUsername(principal.getName());
+        if(changePasswordRequest.getNewPassword().equals(changePasswordRequest.getOldPassword())){
+            throw new InvalidPasswordException("Old password cannot be same as New password");
+        }
+
+        Admin admin = userService.getAdmin(principal.getName());
+        userService.updatePassword(admin.getUser().getId(),changePasswordRequest.getOldPassword(),changePasswordRequest.getNewPassword());
+        return "Password Changed Successfully!";
     }
 }

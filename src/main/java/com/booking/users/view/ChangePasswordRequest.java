@@ -12,7 +12,6 @@ public class ChangePasswordRequest {
     @JsonProperty
     @ApiModelProperty(name = "oldPassword", value = "old password", dataType = "java.lang.String", required = true, position = 1)
     @NotNull
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,64}$", message = "Password constraint")
     private String oldPassword;
 
     @JsonProperty
