@@ -30,4 +30,8 @@ public class ShowService {
     public Movie getMovieById(String movieId) throws IOException, FormatException {
         return movieGateway.getMovieFromId(movieId);
     }
+
+    public List<Movie> getAllMovies() throws IOException, FormatException {
+        return movieGateway.getAllMovies();
+    }
 }
