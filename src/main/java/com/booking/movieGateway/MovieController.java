@@ -36,9 +36,11 @@ public class MovieController {
     public ResponseEntity<List<Movie>> fetchMovies() {
         try {
             List<Movie> movies = movieGateway.getAllMovies();
+            System.out.println(movies.size());
             return new ResponseEntity<>(movies, HttpStatus.OK);
         } catch (IOException | FormatException e) {
             // Handle exception appropriately, you might want to log the error
+            System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
