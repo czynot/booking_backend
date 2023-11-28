@@ -17,13 +17,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = App.class)
 @AutoConfigureMockMvc
@@ -73,6 +76,28 @@ class UserControllerIntegrationTest {
                 .andExpect(status().isUnauthorized());
     }
 
+    @Test
+    public void shouldFetchAdminProfileSuccessfully() throws Exception {
+        User user = userRepository.save(new User("test-user", "password"));
+        Admin admin = adminRepository.save(new Admin(user, "Admin name", 1));
+
+        MvcResult result = mockMvc.perform(get("/profile")
+                        .with(httpBasic("test-user", "password"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String responseText = result.getResponse().getContentAsString();
+        final String EXPECTED_TEXT = "{\"username\":\""+ admin.getUsername() + "\",\"name\":\"" + admin.getName() + "\",\"counter\":" + admin.getCounterNo() + "}";
+        assertEquals(EXPECTED_TEXT, responseText);
+    }
+
+    @Test
+    public void shouldReturnUnauthorisedWithoutCredentials() throws Exception {
+        mockMvc.perform(get("/profile")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
     @Test
     public void shouldReturnInvalidRequestOnProvidingWeakPassword() throws Exception {
         userRepository.save(new User("test-user", "password"));

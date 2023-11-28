@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserPrincipalService implements UserDetailsService {
     private final UserRepository userRepository;
+    private final AdminRepository adminRepository;
 
     @Autowired
-    public UserPrincipalService(UserRepository userRepository) {
+    public UserPrincipalService(UserRepository userRepository, AdminRepository adminRepository) {
         this.userRepository = userRepository;
+        this.adminRepository = adminRepository;
     }
 
     @Override
@@ -24,5 +26,9 @@ public class UserPrincipalService implements UserDetailsService {
 
     public User findUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    public Admin findAdminByUsername(String username) throws UsernameNotFoundException {
+        return adminRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Admin not found"));
     }
 }

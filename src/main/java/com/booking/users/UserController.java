@@ -19,6 +19,11 @@ import java.util.Map;
 @Api(tags = "Users")
 @RestController
 public class UserController {
+    @Autowired
+    private UserPrincipalService userPrincipalService;
+
+    @Autowired
+    private AdminRepository adminRepository;
 
     private UserService userService;
 
@@ -30,8 +35,10 @@ public class UserController {
     @GetMapping("/login")
     Map<String, Object> login(Principal principal) {
         String username = principal.getName();
+
         Map<String, Object> userDetails = new HashMap<>();
         userDetails.put("username", username);
+
         return userDetails;
     }
 

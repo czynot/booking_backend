@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ShowRepository extends JpaRepository<Show, Long> {
-
     List<Show> findByDate(Date date);
 }
