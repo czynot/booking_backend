@@ -46,7 +46,6 @@ class UserControllerIntegrationTest {
     private PasswordHistoryRepository passwordHistoryRepository;
 
 
-
     @BeforeEach
     public void before() {
         passwordHistoryRepository.deleteAll();

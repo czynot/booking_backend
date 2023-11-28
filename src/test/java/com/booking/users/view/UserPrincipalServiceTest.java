@@ -30,7 +30,7 @@ public class UserPrincipalServiceTest {
     @Test
     public void shouldFindAdminbyUsername() {
         Admin mockAdmin = mock(Admin.class);
-        when(adminRepository.findByUsername("admin-user")).thenReturn(Optional.of(mockAdmin));
+        when(adminRepository.findByUsername("admin-user")).thenReturn(mockAdmin);
 
         Admin foundAdmin = userPrincipalService.findAdminByUsername("admin-user");
 
@@ -39,7 +39,7 @@ public class UserPrincipalServiceTest {
 
     @Test
     public void shouldThrowExceptionIfAdminNotFound() {
-        when(adminRepository.findByUsername("admin-user")).thenReturn(Optional.empty());
+        when(adminRepository.findByUsername("admin-user")).thenReturn(null);
 
         assertThrows(UsernameNotFoundException.class, () -> userPrincipalService.findAdminByUsername("undefined-user"));
     }

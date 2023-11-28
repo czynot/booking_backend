@@ -29,6 +29,10 @@ public class UserPrincipalService implements UserDetailsService {
     }
 
     public Admin findAdminByUsername(String username) throws UsernameNotFoundException {
-        return adminRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Admin not found"));
+        Admin admin = adminRepository.findByUsername(username);
+        if (admin == null) {
+            throw new UsernameNotFoundException("Admin not found");
+        }
+        return admin;
     }
 }
