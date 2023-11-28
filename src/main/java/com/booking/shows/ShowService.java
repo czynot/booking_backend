@@ -34,4 +34,9 @@ public class ShowService {
     public List<Movie> getAllMovies() throws IOException, FormatException {
         return movieGateway.getAllMovies();
     }
+
+    public Show addNewShow(Show show) throws IOException, FormatException{
+        return showRepository.save(show);
+    }
+
 }

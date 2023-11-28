@@ -6,6 +6,8 @@ import com.booking.movieGateway.models.Movie;
 import com.booking.shows.ShowService;
 import com.booking.shows.respository.Show;
 import com.booking.shows.view.models.ShowResponse;
+import com.booking.slots.repository.Slot;
+import com.booking.slots.repository.SlotService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -25,10 +27,12 @@ import java.util.List;
 @RequestMapping("/shows")
 public class ShowController {
     private final ShowService showService;
+    private final SlotService slotService;
 
     @Autowired
-    public ShowController(ShowService showService) {
+    public ShowController(ShowService showService, SlotService slotService) {
         this.showService = showService;
+        this.slotService = slotService;
     }
 
     @GetMapping
@@ -49,5 +53,24 @@ public class ShowController {
     private ShowResponse constructShowResponse(Show show) throws IOException, FormatException {
         Movie movie = showService.getMovieById(show.getMovieId());
         return new ShowResponse(movie, show.getSlot(), show);
+    }
+
+    @PostMapping
+    @ApiOperation(value = "Add new shows to DB")
+    @ResponseStatus(code = HttpStatus.OK)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Added new show successfully to DB"),
+            @ApiResponse(code = 500, message = "Something failed in the server", response = ErrorResponse.class)
+    })
+    public ShowRequest addShow(@Valid @RequestBody ShowRequest showRequest) throws IOException, FormatException {
+        for (int slotId : showRequest.getSlots()){
+            System.out.println("Slot = " + slotId);
+            Slot slot = slotService.getSlotById(slotId);
+
+            Show newShow= new Show(showRequest.getDate(),slot, showRequest.getCost(), showRequest.getMovieId());
+            System.out.println("New movie id = " + newShow.getMovieId());
+            showService.addNewShow(newShow);
+        }
+        return showRequest;
     }
 }
