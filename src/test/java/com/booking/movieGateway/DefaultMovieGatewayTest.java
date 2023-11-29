@@ -26,9 +26,9 @@ import static org.mockito.Mockito.when;
 
 class DefaultMovieGatewayTest {
 
-    private static final String SINGLE_MOVIE_RESPONSE = "{\"imdbID\":\"id\",\"Title\":\"title\",\"Runtime\":\"120 min\",\"Plot\":\"plot\"}";
-    private static final String MULTIPLE_MOVIES_RESPONSE = "[{\"imdbID\":\"id1\",\"Title\":\"title1\",\"Runtime\":\"90 min\",\"Plot\":\"plot1\"}," +
-            "{\"imdbID\":\"id2\",\"Title\":\"title2\",\"Runtime\":\"100 min\",\"Plot\":\"plot2\"}]";
+    private static final String SINGLE_MOVIE_RESPONSE = "{\"imdbID\":\"id\",\"Title\":\"title\",\"Runtime\":\"120 min\",\"Plot\":\"plot\",\"Poster\":\"poster\"}";
+    private static final String MULTIPLE_MOVIES_RESPONSE = "[{\"imdbID\":\"id1\",\"Title\":\"title1\",\"Runtime\":\"90 min\",\"Plot\":\"plot1\",\"Poster\":\"poster1\"}," +
+            "{\"imdbID\":\"id2\",\"Title\":\"title2\",\"Runtime\":\"100 min\",\"Plot\":\"plot2\",\"Poster\":\"poster2\"}]";
 
     private MockWebServer mockWebServer;
 
@@ -49,7 +49,7 @@ class DefaultMovieGatewayTest {
 
         final var actualMovie = defaultMovieGateway.getMovieFromId("id");
 
-        final var expectedMovie = new Movie("id", "title", Duration.ofMinutes(120), "plot");
+        final var expectedMovie = new Movie("id", "title", Duration.ofMinutes(120), "plot","poster");
         assertThat(actualMovie, is(equalTo(expectedMovie)));
     }
 
@@ -65,8 +65,8 @@ class DefaultMovieGatewayTest {
         final List<Movie> movieList = defaultMovieGateway.getAllMovies();
 
         final List<Movie> expectedMovies = Arrays.asList(
-                new Movie("id1", "title1", Duration.ofMinutes(90), "plot1"),
-                new Movie("id2", "title2", Duration.ofMinutes(100), "plot2")
+                new Movie("id1", "title1", Duration.ofMinutes(90), "plot1","poster1"),
+                new Movie("id2", "title2", Duration.ofMinutes(100), "plot2","poster2")
         );
 
         assertThat(movieList, is(equalTo(expectedMovies)));

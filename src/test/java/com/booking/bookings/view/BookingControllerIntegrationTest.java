@@ -75,7 +75,9 @@ public class BookingControllerIntegrationTest {
                                 "movie_1",
                                 "Movie name",
                                 Duration.ofHours(1).plusMinutes(30),
-                                "Movie description"
+                                "Movie description",
+                                "Poster"
+
                         )
                 );
         Slot slotOne = slotRepository.save(new Slot("Test slot", Time.valueOf("09:30:00"), Time.valueOf("12:00:00")));

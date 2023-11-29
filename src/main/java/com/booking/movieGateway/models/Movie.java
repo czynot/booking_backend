@@ -30,7 +30,7 @@ public class Movie {
     private final String plot;
 
     @JsonProperty
-    @ApiModelProperty(name = "description", value = "Description of the movie", required = true, example = "Movie Description", position = 5)
+    @ApiModelProperty(name = "poster", value = "poster of the movie", required = true, example = "posterOfTheMovie", position = 5)
     private final String poster;
 
     public Movie(String id, String name, Duration duration, String plot, String poster) {
