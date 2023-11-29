@@ -35,14 +35,27 @@ public class UserServiceTest {
 
     @Test
     public void should_return_admin_by_username() throws UnAuthorizedUserException {
-        Admin admin = mock(Admin.class);
+        User user = new User("test-user", "test-password");
+        Admin admin = new Admin(user,"admin-1", 3);
+
         when(adminRepository.findByUsername("test-user")).thenReturn(admin);
         UserService userService = new UserService(adminRepository,passwordHistoryRepository, userRepository);
 
-        Admin actual = userService.getAdmin("test-user");
+        Admin actual = userService.getAdmin("test-user","test-password");
 
         verify(adminRepository,times(1)).findByUsername("test-user");
         assertEquals(actual, admin);
+    }
+
+    @Test
+    public void shouldReturnUnAuthorizedUserExceptionWhenInvalidPasswordIsGiven() throws UnAuthorizedUserException {
+        User user = new User("test-user", "test-password");
+        Admin admin = new Admin(user,"admin-1", 3);
+
+        when(adminRepository.findByUsername("test-user")).thenReturn(admin);
+        UserService userService = new UserService(adminRepository,passwordHistoryRepository, userRepository);
+
+        assertThrows(UnAuthorizedUserException.class,()->{userService.getAdmin("test-user", "test-user1");});
     }
 
 

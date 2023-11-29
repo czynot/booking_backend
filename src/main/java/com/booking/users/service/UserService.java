@@ -30,9 +30,9 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Admin getAdmin(String name) throws UnAuthorizedUserException {
+    public Admin getAdmin(String name,String oldPassword) throws UnAuthorizedUserException {
         Admin admin = adminRepository.findByUsername(name);
-        if(admin == null){
+        if(admin == null || !admin.getUser().getPassword().equals(oldPassword)){
             throw new UnAuthorizedUserException();
         }
         return admin;

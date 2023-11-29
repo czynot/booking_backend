@@ -45,12 +45,16 @@ public class UserController {
     @PutMapping(path = "/change-password")
     String changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest, Principal principal) throws InvalidPasswordException, UnAuthorizedUserException {
 
-        if(changePasswordRequest.getNewPassword().equals(changePasswordRequest.getOldPassword())){
+        String oldPassword = changePasswordRequest.getOldPassword();
+
+        String newPassword = changePasswordRequest.getNewPassword();
+
+        if(newPassword.equals(oldPassword)){
             throw new InvalidPasswordException("Old password cannot be same as New password");
         }
 
-        Admin admin = userService.getAdmin(principal.getName());
-        userService.updatePassword(admin.getUser().getId(),changePasswordRequest.getOldPassword(),changePasswordRequest.getNewPassword());
+        Admin admin = userService.getAdmin(principal.getName(), oldPassword);
+        userService.updatePassword(admin.getUser().getId(), oldPassword, newPassword);
         return "Password Changed Successfully!";
     }
 }

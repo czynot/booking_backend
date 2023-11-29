@@ -28,7 +28,7 @@ public class UserPrincipalServiceTest {
     }
 
     @Test
-    public void shouldFindAdminbyUsername() {
+    public void shouldFindAdminByUsername() {
         Admin mockAdmin = mock(Admin.class);
         when(adminRepository.findByUsername("admin-user")).thenReturn(mockAdmin);
 

@@ -97,6 +97,24 @@ class UserControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
     }
+
+    @Test
+    public void shouldReturnUnAuthorizedUSerExceptionWhenInvalidCredentialsAreGiven() throws Exception {
+        User user = userRepository.save(new User("test-user", "password"));
+        adminRepository.save(new Admin(user,"test-user",1));
+        final String requestJson = "{" +
+                "\"oldPassword\": \"password2\"," +
+                "\"newPassword\": \"Password@2\""+
+                "}";
+
+
+        mockMvc.perform(put("/change-password")
+                        .with(httpBasic("test-user", "password"))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestJson))
+                .andExpect(status().isUnauthorized());
+
+    }
     @Test
     public void shouldReturnInvalidRequestOnProvidingWeakPassword() throws Exception {
         userRepository.save(new User("test-user", "password"));
