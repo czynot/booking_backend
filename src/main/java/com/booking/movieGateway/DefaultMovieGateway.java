@@ -44,8 +44,6 @@ public class DefaultMovieGateway implements MovieGateway {
         final var response = httpClient.newCall(request).execute();
         System.out.println("response" + response);
         final var jsonResponse = requireNonNull(response.body()).string();
-        System.out.println("JSONresponse" + jsonResponse);
-
         return objectMapper.readValue(jsonResponse, MovieServiceResponse.class).toMovie();
     }
 

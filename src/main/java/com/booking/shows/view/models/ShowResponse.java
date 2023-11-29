@@ -31,11 +31,13 @@ public class ShowResponse {
     @ApiModelProperty(required = true, position = 5)
     private final Slot slot;
 
+
     public ShowResponse(Movie movie, Slot slot, Show show) {
         this.movie = movie;
         this.slot = slot;
         this.id = show.getId();
         this.date = show.getDate();
         this.cost = show.getCost();
+
     }
 }
