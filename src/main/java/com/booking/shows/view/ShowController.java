@@ -57,20 +57,20 @@ public class ShowController {
 
     @PostMapping
     @ApiOperation(value = "Add new shows to DB")
-    @ResponseStatus(code = HttpStatus.OK)
+    @ResponseStatus(code = HttpStatus.CREATED)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Added new show successfully to DB"),
             @ApiResponse(code = 500, message = "Something failed in the server", response = ErrorResponse.class)
     })
-    public ShowRequest addShow(@Valid @RequestBody ShowRequest showRequest) throws IOException, FormatException {
+    public List<Long> addShow(@Valid @RequestBody ShowRequest showRequest) throws IOException, FormatException {
+        ArrayList<Long> addedShowIds = new ArrayList<>();
         for (int slotId : showRequest.getSlots()){
-            System.out.println("Slot = " + slotId);
             Slot slot = slotService.getSlotById(slotId);
 
-            Show newShow= new Show(showRequest.getDate(),slot, showRequest.getCost(), showRequest.getMovieId());
-            System.out.println("New movie id = " + newShow.getMovieId());
-            showService.addNewShow(newShow);
+            Show newShow = new Show(showRequest.getDate(), slot, showRequest.getCost(), showRequest.getMovieId());
+            Show addedShow = showService.addNewShow(newShow);
+            addedShowIds.add(addedShow.getId());
         }
-        return showRequest;
+        return addedShowIds;
     }
 }

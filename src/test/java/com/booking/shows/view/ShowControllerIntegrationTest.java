@@ -7,6 +7,9 @@ import com.booking.shows.respository.Show;
 import com.booking.shows.respository.ShowRepository;
 import com.booking.slots.repository.Slot;
 import com.booking.slots.repository.SlotRepository;
+import com.booking.users.User;
+import com.booking.users.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,18 +19,29 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.Duration;
+import java.util.*;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @SpringBootTest(classes = App.class)
 @AutoConfigureMockMvc
@@ -88,5 +102,24 @@ public class ShowControllerIntegrationTest {
                                 "'slot':{'id':" + slotTwo.getId() + ",'name':'Test slot two','startTime':'1:30 PM','endTime':'4:00 PM'}," +
                                 "'movie':{'id':'movie_1','name':'Movie name','duration':'1h 30m','plot':'Movie plot'}}" +
                                 "]"));
+    }
+
+    @Test
+    void addNewShows() throws Exception {
+        Slot slotOne = slotRepository.save(new Slot("slot1", Time.valueOf("09:30:00"), Time.valueOf("12:00:00")));
+        Slot slotTwo = slotRepository.save(new Slot("Test slot two", Time.valueOf("13:30:00"), Time.valueOf("17:00:00")));
+        String newScheduleRequestBodyString = "{\n" +
+                "    \"cost\": \"100\",\n" +
+                "    \"movieId\": \"tt1396484\",\n" +
+                "    \"slots\": [" + slotOne.getId() + ", " + slotTwo.getId() + "],\n" +
+                "    \"date\": \"2023-12-04\"\n" +
+                "}";
+
+        mockMvc.perform(post("/shows")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(newScheduleRequestBodyString))
+                .andExpect(status().isCreated());
+
+        assertThat(showRepository.findAll().size(), is(2));
     }
 }

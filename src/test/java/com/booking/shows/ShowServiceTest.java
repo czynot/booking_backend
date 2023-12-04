@@ -6,6 +6,7 @@ import com.booking.movieGateway.models.Movie;
 import com.booking.shows.respository.Show;
 import com.booking.shows.respository.ShowRepository;
 import com.booking.slots.repository.Slot;
+import com.booking.slots.repository.SlotService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -48,17 +49,9 @@ public class ShowServiceTest {
         Slot slotTwo = new Slot();
         Date date = Date.valueOf("2020-01-01");
 
-        shows.add(new Show(
-                Date.valueOf("2020-01-01"),
-                slotOne,
-                new BigDecimal("299.99"),
-                "movie_1"));
+        shows.add(new Show(Date.valueOf("2020-01-01"), slotOne, new BigDecimal("299.99"), "movie_1"));
 
-        shows.add(new Show(
-                Date.valueOf("2020-01-01"),
-                slotTwo,
-                new BigDecimal("299.99"),
-                "movie_1"));
+        shows.add(new Show(Date.valueOf("2020-01-01"), slotTwo, new BigDecimal("299.99"), "movie_1"));
 
         when(showRepository.findByDate(date)).thenReturn(shows);
         ShowService showService = new ShowService(showRepository, movieGateway);
@@ -66,18 +59,20 @@ public class ShowServiceTest {
         List<Show> actualShows = showService.fetchAll(date);
 
         List<Show> expectedShows = new ArrayList<>();
-        expectedShows.add(new Show(
-                Date.valueOf("2020-01-01"),
-                slotOne,
-                new BigDecimal("299.99"),
-                "movie_1"));
+        expectedShows.add(new Show(Date.valueOf("2020-01-01"), slotOne, new BigDecimal("299.99"), "movie_1"));
 
-        expectedShows.add(new Show(
-                Date.valueOf("2020-01-01"),
-                slotTwo,
-                new BigDecimal("299.99"),
-                "movie_1"));
+        expectedShows.add(new Show(Date.valueOf("2020-01-01"), slotTwo, new BigDecimal("299.99"), "movie_1"));
 
         assertThat(actualShows, is(equalTo(expectedShows)));
+    }
+
+    @Test
+    void shouldAddNewShowInTheShowTable() throws IOException, FormatException {
+        ShowService showService = new ShowService(showRepository, movieGateway);
+        Slot slot1 = new Slot();
+        Show newShow = new Show(Date.valueOf("2020-01-01"), slot1, new BigDecimal("299.99"), "movie_1");
+        when(showRepository.save(newShow)).thenReturn(newShow);
+        Show addedShow = showService.addNewShow(newShow);
+        verify(showRepository, times(1)).save(addedShow);
     }
 }

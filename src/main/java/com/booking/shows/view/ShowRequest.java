@@ -10,7 +10,6 @@ public class ShowRequest {
     private List<Integer> slots;
     private Date date;
 
-
     public BigDecimal getCost() {
         return cost;
     }
