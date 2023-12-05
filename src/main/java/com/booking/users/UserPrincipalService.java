@@ -21,7 +21,8 @@ public class UserPrincipalService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User savedUser = findUserByUsername(username);
 
-        return new UserPrincipal(savedUser);
+        return UserPrincipal.build(savedUser);
+//        return new UserPrincipal(savedUser);
     }
 
     public User findUserByUsername(String username) throws UsernameNotFoundException {

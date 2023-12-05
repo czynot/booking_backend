@@ -16,11 +16,11 @@ public class DataSeeder {
     CommandLineRunner initDatabase(UserRepository repository, AdminRepository adminRepository) {
         return args -> {
             if (repository.findByUsername("seed-user-1").isEmpty()) {
-                User user1 = repository.save(new User("seed-user-1", "foobar"));
+                User user1 = repository.save(new User("seed-user-1", "$2a$12$ofjREn7TscarELizSDnm8elsCMuUcPbvq95JZzJSR2CjPJnuKVwG2", "ADMIN"));
                 adminRepository.save(new Admin(user1, "Admin User 1", 1));
             }
             if (repository.findByUsername("seed-user-2").isEmpty()) {
-                User user2 = repository.save(new User("seed-user-2", "foobar"));
+                User user2 = repository.save(new User("seed-user-2", "$2a$12$ofjREn7TscarELizSDnm8elsCMuUcPbvq95JZzJSR2CjPJnuKVwG2", "ADMIN"));
                 adminRepository.save(new Admin(user2, "Admin User 2", 2));
             }
         };

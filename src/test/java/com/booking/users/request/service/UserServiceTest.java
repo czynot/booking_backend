@@ -1,4 +1,4 @@
-package com.booking.users.view.service;
+package com.booking.users.request.service;
 
 import com.booking.exceptions.InvalidPasswordException;
 import com.booking.exceptions.UnAuthorizedUserException;

@@ -9,7 +9,7 @@ declare -a slot_ids
 declare start_date
 declare next_date
 
-DB_HOST='localhost'
+DB_HOST='localhost -p 5433'
 DB_DATABASE="${POSTGRES_DB}"
 DB_USERNAME="${POSTGRES_USER}"
 

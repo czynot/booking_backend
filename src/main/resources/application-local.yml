@@ -3,12 +3,16 @@ spring:
     hibernate:
       ddl-auto: validate
   datasource:
-    url: jdbc:postgresql://localhost:5432/bookingengine
+    url: jdbc:postgresql://localhost:5433/bookingengine
     username: bookingengine
     password: postgres
 logging:
   level:
     root: INFO
+booking:
+  app:
+    jwtSecret: 8e1fc040aee2b6bf800dcdc1ded1724af99bc90b558ace4bf7d0b09f51240ebb
+    jwtExpirationMs: 86400000
 application:
   uiHost: http://localhost:3000
   movieServiceHost: http://ec2-65-1-2-92.ap-south-1.compute.amazonaws.com:4567/

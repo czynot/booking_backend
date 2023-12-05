@@ -7,3 +7,20 @@ fileignoreconfig:
   checksum: 6f2809d06fa7d484b934ac433b70b9367908e5ee5d7a29d0650a451ca470f8f0
 - filename: src/main/resources/db/migration/V1.10__CreateAdminTable.sql
   checksum: 1298683b901ade2707f03b1ddba44f3ce3d91194a25bcd4387d3ca4f751d3835
+- filename: src/main/resources/db/migration/V1.13__AddColumnRoleInUsertable.sql
+  checksum: d67bd4ce9c5be054cb4ae5fad1965f95d6de3936b9be0b6f9b8278cd3072aadf
+- filename: src/main/resources/application-local.yml
+  checksum: 47afe2e4282ef324d94ca7763df221309616e8ae5c0ac24672a7dba1d8a2a9d9
+- filename: src/main/java/com/booking/DataSeeder.java
+  checksum: 69db63e6c7b1db6b33114261ffe1b41a28c57fb9d97ce0931ae866aa1dd7630e
+- filename: src/main/java/com/booking/users/UserController.java
+  checksum: a0a522be289e628b130c41fcdba240e7ab8a880ba06f1aac195640620f84959c
+- filename: src/main/java/com/booking/users/User.java
+  checksum: 0a4abf03f5681de63b0de21b015c736be921ee2bbe6220fe8fc4d7b92c83b725
+- filename: src/main/java/com/booking/jwt/AuthTokenFilter.java
+  checksum: 8151291358b6c78ce4299752546498fb22e43319024fa2a74de16eb2e27dd423
+- filename: src/main/java/com/booking/jwt/JwtUtils.java
+  checksum: da890946c23d0ad764d6a4f0d4705ecdd4e1e6af677330685e11ebe5455d4896
+- filename: src/main/java/com/booking/users/request/LoginRequest.java
+  checksum: 00cd7208aa205947bc455b96a8dbd3f8fb66612fd3f62ca09c12fe27343757a9
+version: ""

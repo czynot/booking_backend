@@ -1,4 +1,4 @@
-package com.booking.users.view;
+package com.booking.users.request;
 
 import com.booking.App;
 import com.booking.passwordHistory.PasswordHistory;

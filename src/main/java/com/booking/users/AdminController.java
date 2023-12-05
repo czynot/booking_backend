@@ -23,4 +23,12 @@ public class AdminController {
 
         return new AdminResponse(admin.getUsername(), admin.getName(), admin.getCounterNo());
     }
+
+    @GetMapping("/role")
+    boolean role(Principal principal) {
+        String username = principal.getName();
+        Admin admin = userPrincipalService.findAdminByUsername(username);
+
+        return admin.getUsername() != null;
+    }
 }
