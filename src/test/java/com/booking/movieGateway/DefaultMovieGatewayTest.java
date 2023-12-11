@@ -26,9 +26,9 @@ import static org.mockito.Mockito.when;
 
 class DefaultMovieGatewayTest {
 
-    private static final String SINGLE_MOVIE_RESPONSE = "{\"imdbID\":\"id\",\"Title\":\"title\",\"Runtime\":\"120 min\",\"Plot\":\"plot\",\"Poster\":\"poster\"}";
-    private static final String MULTIPLE_MOVIES_RESPONSE = "[{\"imdbID\":\"id1\",\"Title\":\"title1\",\"Runtime\":\"90 min\",\"Plot\":\"plot1\",\"Poster\":\"poster1\"}," +
-            "{\"imdbID\":\"id2\",\"Title\":\"title2\",\"Runtime\":\"100 min\",\"Plot\":\"plot2\",\"Poster\":\"poster2\"}]";
+    private static final String SINGLE_MOVIE_RESPONSE = "{\"imdbID\":\"id\",\"Title\":\"title\",\"Runtime\":\"120 min\",\"Plot\":\"plot\",\"Poster\":\"poster\",\"imdbRating\":\"9.0\"}";
+    private static final String MULTIPLE_MOVIES_RESPONSE = "[{\"imdbID\":\"id1\",\"Title\":\"title1\",\"Runtime\":\"90 min\",\"Plot\":\"plot1\",\"Poster\":\"poster1\",\"imdbRating\":\"9.0\"}," +
+            "{\"imdbID\":\"id2\",\"Title\":\"title2\",\"Runtime\":\"100 min\",\"Plot\":\"plot2\",\"Poster\":\"poster2\",\"imdbRating\":\"9.0\"}]";
 
     private MockWebServer mockWebServer;
 
@@ -49,7 +49,7 @@ class DefaultMovieGatewayTest {
 
         final var actualMovie = defaultMovieGateway.getMovieFromId("id");
 
-        final var expectedMovie = new Movie("id", "title", Duration.ofMinutes(120), "plot","poster");
+        final var expectedMovie = new Movie("id", "title", Duration.ofMinutes(120), "plot","poster", "9.0");
         assertThat(actualMovie, is(equalTo(expectedMovie)));
     }
 
@@ -65,8 +65,8 @@ class DefaultMovieGatewayTest {
         final List<Movie> movieList = defaultMovieGateway.getAllMovies();
 
         final List<Movie> expectedMovies = Arrays.asList(
-                new Movie("id1", "title1", Duration.ofMinutes(90), "plot1","poster1"),
-                new Movie("id2", "title2", Duration.ofMinutes(100), "plot2","poster2")
+                new Movie("id1", "title1", Duration.ofMinutes(90), "plot1","poster1", "9.0"),
+                new Movie("id2", "title2", Duration.ofMinutes(100), "plot2","poster2", "9.0")
         );
 
         assertThat(movieList, is(equalTo(expectedMovies)));

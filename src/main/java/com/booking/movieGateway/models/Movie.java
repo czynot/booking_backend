@@ -33,12 +33,17 @@ public class Movie {
     @ApiModelProperty(name = "poster", value = "poster of the movie", required = true, example = "posterOfTheMovie", position = 5)
     private final String poster;
 
-    public Movie(String id, String name, Duration duration, String plot, String poster) {
+    @JsonProperty
+    @ApiModelProperty(name = "imdbRating", value = "IMDB rating of the movie", required = true, example = "9.0", position = 6)
+    private final String imdbRating;
+
+    public Movie(String id, String name, Duration duration, String plot, String poster, String imdbRating) {
         this.id = id;
         this.name = name;
         this.duration = duration;
         this.plot = plot;
         this.poster = poster;
+        this.imdbRating = imdbRating;
     }
 
     @Override
@@ -50,11 +55,12 @@ public class Movie {
                 name.equals(movie.name) &&
                 duration.equals(movie.duration) &&
                 plot.equals(movie.plot) &&
-                poster.equals(movie.poster);
+                poster.equals(movie.poster) &&
+                imdbRating.equals(movie.imdbRating);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, duration, plot, poster);
+        return Objects.hash(id, name, duration, plot, poster, imdbRating);
     }
 }

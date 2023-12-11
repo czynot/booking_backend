@@ -82,7 +82,8 @@ public class ShowControllerIntegrationTest {
                                 "Movie name",
                                 Duration.ofHours(1).plusMinutes(30),
                                 "Movie plot",
-                                ""
+                                "",
+                                "9.0"
                         )
                 );
         final Slot slotOne = slotRepository.save(new Slot("Test slot one", Time.valueOf("09:30:00"), Time.valueOf("12:00:00")));
